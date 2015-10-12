@@ -2,7 +2,7 @@ module Main where
 
 import Network.Wai.Handler.Warp    (run)
 import System.Environment          (lookupEnv)
-import Database.Persist.Postgresql (runSqlPool)
+import Database.Persist.MySQL (runSqlPool)
 
 import Config (defaultConfig, Config(..), Environment(..), setLogger, makePool)
 import Api    (app)

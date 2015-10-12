@@ -15,7 +15,7 @@ module Models where
 import Data.Aeson                  (ToJSON, FromJSON)
 import GHC.Generics                (Generic)
 import Control.Monad.Reader        (ReaderT, asks, liftIO)
-import Database.Persist.Postgresql (SqlBackend(..), runMigration, 
+import Database.Persist.MySQL (SqlBackend(..), runMigration, 
                                     runSqlPool)
 import Database.Persist.TH         (share, mkPersist, sqlSettings,
                                     mkMigrate, persistLowerCase)

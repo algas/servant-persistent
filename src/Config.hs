@@ -6,7 +6,7 @@ import Network.Wai.Middleware.RequestLogger (logStdoutDev, logStdout)
 import Network.Wai                          (Middleware)
 import Control.Monad.Logger                 (runNoLoggingT, runStdoutLoggingT)
 
-import Database.Persist.Postgresql (ConnectionPool, createPostgresqlPool, ConnectionString)
+import Database.Persist.MySQL (ConnectionPool, createMySQLPool, ConnectInfo (..), defaultConnectInfo)
 
 data Config = Config 
     { getPool :: ConnectionPool
@@ -31,13 +31,20 @@ setLogger Development = logStdoutDev
 setLogger Production = logStdout
 
 makePool :: Environment -> IO ConnectionPool
-makePool Test = runNoLoggingT $ createPostgresqlPool (connStr Test) (envPool Test)
-makePool e = runStdoutLoggingT $ createPostgresqlPool (connStr e) (envPool e)
+makePool Test = runNoLoggingT $ createMySQLPool (connStr Test) (envPool Test)
+makePool e = runStdoutLoggingT $ createMySQLPool (connStr e) (envPool e)
 
 envPool :: Environment -> Int
 envPool Test = 1
 envPool Development = 1
 envPool Production = 8
 
-connStr :: Environment -> ConnectionString
-connStr _ = "host=localhost dbname=perservant user=test password=test port=5432"
+connStr :: Environment -> ConnectInfo
+connStr _ = defaultConnectInfo 
+    {
+      connectHost = "localhost" 
+    , connectPort = 3306
+    , connectUser = "test"
+    , connectPassword = "secret"
+    , connectDatabase = "perservant"
+    }

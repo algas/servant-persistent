@@ -17,52 +17,9 @@ You can use [stack](https://github.com/commercialhaskell/stack) to get started:
 1. `stack build`
 2. `stack exec perservant`
 
-Alternatively, cabal can be used:
-
-1. `cabal sandbox init`
-2. `cabal install --dependencies-only && cabal configure && cabal build`
-3. `cabal run`
-
 ### Database:
 
-You will need PostgreSQL installed and listening on port 5432. The default configuration uses a database name `perservant` with username/password test:test.
-
-These following steps worked on Arch Linux:
-
-```
-# install postgres
-$ sudo pacman -S postgres
-
-# The installation process should have created the postgres system user for us.
-# Become that user in order to initialize the DB.  This is required before
-# running the postgres service.
-$ sudo -i -u postgres
-
-# As the postgres user, initialize the database.
-[postgres]$ initdb --locale en_US.UTF-8 -E UTF8 -D '/var/lib/postgres/data'
-# Exit to go back to your normal user.
-[postgres]$ exit
-
-# As your normal user start the postgres service.
-$ sudo systemctl start postgres.service
-
-# When that starts successfully, then we need to become the postgres system
-# user again to create the "test" user and perservant database.
-$ sudo -i -u postgres
-[postgres]$ createuser --interactive
-Enter name of role to add: test
-Shall the new role be a superuser? (y/n) y
-[postgres]$ createdb perservant -U test
-# Exit to go back to your normal user.
-[postgres]$ exit
-
-# As your normal user you can log in and play around with the DB:
-$ psql -d perservant -U test
-psql (9.4.4)
-Type "help" for help.
-
-perservant=#
-```
+You will need MySQL installed and listening on port 3306. The default configuration uses a database name `perservant` with username/password test:secret.
 
 ## The API:
 
