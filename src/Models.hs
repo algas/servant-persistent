@@ -1,5 +1,6 @@
 {-# LANGUAGE EmptyDataDecls             #-}
 {-# LANGUAGE FlexibleContexts           #-}
+{-# LANGUAGE FlexibleInstances          #-}
 {-# LANGUAGE GADTs                      #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses      #-}
@@ -23,10 +24,10 @@ import Database.Persist.TH         (share, mkPersist, sqlSettings,
 import Config
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
-User
+Person json
     name String
     email String
-    deriving Show
+    deriving Eq Show Generic
 |]
 
 doMigrations :: ReaderT SqlBackend IO ()
@@ -35,14 +36,3 @@ doMigrations = runMigration migrateAll
 runDb query = do
     pool <- asks getPool
     liftIO $ runSqlPool query pool
-
-data Person = Person
-    { name :: String
-    , email :: String
-    } deriving (Eq, Show, Generic)
-
-instance ToJSON Person
-instance FromJSON Person
-
-userToPerson :: User -> Person
-userToPerson User{..} = Person { name = userName, email = userEmail }

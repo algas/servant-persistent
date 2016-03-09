@@ -38,19 +38,19 @@ server = allPersons :<|> singlePerson :<|> createPerson
 
 allPersons :: AppM [Person]
 allPersons = do
-    users <- runDb $ selectList [] []
-    let people = map (\(Entity _ y) -> userToPerson y) users
-    return people
+    people <- runDb $ selectList [] []
+    let person = map (\(Entity _ y) -> y) people
+    return person
 
 singlePerson :: String -> AppM Person
 singlePerson str = do
-    users <- runDb $ selectList [UserName ==. str] []
-    let list = map (\(Entity _ y) -> userToPerson y) users
+    people <- runDb $ selectList [PersonName ==. str] []
+    let list = map (\(Entity _ y) -> y) people
     case list of
          []     -> lift $ left err404
          (x:xs) -> return x
 
 createPerson :: Person -> AppM Int64
 createPerson p = do
-    newPerson <- runDb $ insert $ User (name p) (email p)
+    newPerson <- runDb $ insert $ Person (personName p) (personEmail p)
     return $ fromSqlKey newPerson
