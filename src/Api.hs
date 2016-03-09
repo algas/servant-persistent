@@ -6,7 +6,7 @@ module Api where
 import Control.Monad.Reader         (ReaderT, runReaderT, lift)
 import Control.Monad.Trans.Either   (EitherT, left)
 import Network.Wai                  (Application)
-import Database.Persist.Postgresql  (insert, selectList, Entity(..)
+import Database.Persist.MySQL       (insert, selectList, Entity(..)
                                     ,fromSqlKey, (==.))
 import Data.Int                     (Int64)
 import Servant
